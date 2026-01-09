@@ -13,7 +13,7 @@ router.get('/', (req, res) => {
 });
 
 //all todos route
-router.get('/todos', todoController.getAllTodos);
+router.get('/alltodos', todoController.getAllTodos);
 
 //add todos route
 router.post('/todos-add', todoController.addTodos);
