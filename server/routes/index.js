@@ -1,5 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const todoController = require('../controllers/todolist_controller');
 const app = express();
 const router = express.Router();
 
@@ -10,5 +11,17 @@ app.use(express.json());
 router.get('/', (req, res) => {
     res.send('Welcome to the To-Do List API');
 });
+
+//all todos route
+router.get('/todos', todoController.getAllTodos);
+
+//add todos route
+router.post('/todos-add', todoController.addTodos);
+
+//delete todos route
+router.delete('/todos-delete/:id', todoController.deleteTodos);
+
+//update todos route
+router.put('/todos-update/:id', todoController.updateTodos);
 
 module.exports = router;
