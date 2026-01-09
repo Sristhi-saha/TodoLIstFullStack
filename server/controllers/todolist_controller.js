@@ -26,6 +26,7 @@ const addTodos = async(req,res)=>{
 const deleteTodos = async(req,res)=>{
     try{
         const todoId = req.params.id;
+        console.log(todoId);
         const deletedTodo = await todo.findByIdAndDelete(todoId);
         if(!deletedTodo){
             return res.status(404).json({
