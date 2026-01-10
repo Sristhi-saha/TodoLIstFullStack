@@ -1,5 +1,7 @@
 import { useState } from 'react'
 import TodoList from './component/todolist/index.jsx'
+import AddTodo from './component/addtodo/index.jsx'
+import { Routes, Route } from 'react-router-dom'
 
 function App() {
   return (
@@ -8,11 +10,17 @@ function App() {
         <h1 className='font-mono tracking-wider text-5xl '>
           TO-DO APP
         </h1>
-        </div>
+      </div>
       <div className="max-w-2xl mx-auto">
+      <Routes>
+        <Route path='/' element={<TodoList />} />
+        <Route path='/add-todo' element={<AddTodo/>}/>
+      </Routes>
+      {/* <div className="max-w-2xl mx-auto">
         <div className="p-6">
           <TodoList />
         </div>
+      </div> */}
       </div>
     </div>
   )
