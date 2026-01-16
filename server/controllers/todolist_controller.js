@@ -47,6 +47,7 @@ const deleteTodos = async(req,res)=>{
 const updateTodos = async(req,res)=>{
     try{
         const todoId = req.params.id;
+        console.log(todoId);
         const todoData = req.body;
         const updateTodo = await todo.findByIdAndUpdate(todoId, todoData, { new: true });
         res.status(200).json({
