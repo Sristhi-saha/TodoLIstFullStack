@@ -15,6 +15,9 @@ router.get('/', (req, res) => {
 //all todos route
 router.get('/alltodos', todoController.getAllTodos);
 
+//completed todos route
+router.patch('/todo-completed/:id',todoController.completedTodo);
+
 //add todos route
 router.post('/todos-add', todoController.addTodos);
 

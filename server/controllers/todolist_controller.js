@@ -65,9 +65,37 @@ const updateTodos = async(req,res)=>{
     }
 }
 
+const completedTodo = async (req,res)=>{
+    try{
+        const id = req.params.id;
+        console.log(id);
+
+        const todoFind = await todo.findById(id);
+        if(!todoFind){
+            return res.status(400).json({
+                success:false,  
+                message:'Todo not found with this id!!'
+            })
+        }
+
+        todoFind.completed= !todoFind.completed;
+        await todoFind.save();
+
+        res.status(200).json({
+            success:true,
+            message:'updated successfully',
+            data:todoFind
+        })
+
+    }catch(e){
+        console.log(e)
+    }
+}
+
 module.exports = {
     getAllTodos,
     addTodos,
     deleteTodos,
-    updateTodos
+    updateTodos,
+    completedTodo
 }
