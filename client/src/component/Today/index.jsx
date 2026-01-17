@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchTodos } from "../../store/slice/todoSlice";
+import { completedTodoAsync, fetchTodos } from "../../store/slice/todoSlice";
 import NavigateOption from "../navigate";
 
 
@@ -19,15 +19,30 @@ const handleAddTask = ()=>{
 window.location.href='/add-todo'
 }
 
+const handleToggleComplete = (id)=>{
+    dispatch(completedTodoAsync(id));
+}
 
-    if(loading && todos.length===0){
+const handleEditTodo = (id)=>{
+    console.log('editing todo with this id:',id);
+    if(!id) return console.error('tod is not getting in this id...');
+    window.location.href=`/edit-todo/${id}`;
+}
+
+const now = new Date().toISOString().split('T')[0];
+console.log(now);
+
+const todayTodo =  todos.filter(todo=>todo.date.split('T')[0]===now && todo.completed===false);
+console.log(todayTodo);
+
+    if( todayTodo.length===0){
         return (
         <div className="">
             <NavigateOption />
             <div className="w-full pl-10 pr-10 pt-4">
                 <div className="flex justify-center items-center">
                     <div className="text-gray-600 text-lg">
-                        Loading tasks....
+                        No task is found....
                     </div>
                 </div>
             </div>
@@ -74,16 +89,16 @@ window.location.href='/add-todo'
                         <p className="text-gray-500 text-center py-8">No tasks yet. Add your first task!</p>
                     ) : (
                         <ul className="flex flex-col gap-3 sm:gap-4">
-                            {todos.map((todo) => (
+                            {todayTodo.map((todo) => (
                                 <li
                                     key={todo._id}
                                     className="flex flex-col sm:flex-row sm:justify-between sm:items-center border-b border-gray-100 py-3 px-2 rounded hover:bg-gray-100"
                                 >
                                     <div className="flex items-center gap-2 flex-1">
                                         <input
-                                            type="input"
+                                            type="checkbox"
                                             checked={todo.completed}
-                                            onChange={() => handleToggleComplete(todo)}
+                                            onChange={() => handleToggleComplete(todo._id)}
                                             className="w-5 h-5 cursor-pointer"
                                         />
                                         <span className={todo.completed ? "line-through text-gray-500" : "text-gray-800 text-base sm:text-lg"}>
