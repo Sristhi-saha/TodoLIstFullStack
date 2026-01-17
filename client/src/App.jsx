@@ -3,6 +3,9 @@ import TodoList from './component/todolist/index.jsx'
 import AddTodo from './component/addtodo/index.jsx'
 import { Routes, Route } from 'react-router-dom'
 import EditTodo from './component/editTodo/index.jsx'
+import Today from './component/Today/index.jsx'
+import Pending from './component/pending/index.jsx'
+import Overdue from './component/Overdue/index.jsx'
 
 function App() {
   return (
@@ -13,12 +16,15 @@ function App() {
         </h1>
       </div>
       <div className="max-w-2xl mx-auto">
-      <Routes>
-        <Route path='/' element={<TodoList />} />
-        <Route path='/add-todo' element={<AddTodo/>}/>
-        <Route path='/edit-todo/:id' element={<EditTodo />}/>
-      </Routes>
-      {/* <div className="max-w-2xl mx-auto">
+        <Routes>
+          <Route path='/' element={<TodoList />} />
+          <Route path='/today' element={<Today />} />
+          <Route path='/pending' element={<Pending />} />
+          <Route path='/overdue' element={<Overdue />} />
+          <Route path='/add-todo' element={<AddTodo />} />
+          <Route path='/edit-todo/:id' element={<EditTodo />} />
+        </Routes>
+        {/* <div className="max-w-2xl mx-auto">
         <div className="p-6">
           <TodoList />
         </div>

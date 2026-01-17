@@ -24,5 +24,11 @@ export const updateTodo = async (id, updatedTodo) => {
   return response.data.data; // matches backend's `data` property
 };
 
+export const completedTodo = async (id)=>{
+  const res = await axios.patch(`${BASE_URL}/todo-completed/${id}`);
+  console.log(res);
+  return res.data.data;
+}
+
 
 

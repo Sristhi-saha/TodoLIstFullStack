@@ -1,10 +1,11 @@
 
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { 
-    createTodo, 
-    fetchTodos as fetchTodosAPI, 
-    deleteTodo as deleteTodoAPI, 
-    updateTodo as updateTodoAPI 
+import {
+    createTodo,
+    fetchTodos as fetchTodosAPI,
+    deleteTodo as deleteTodoAPI,
+    updateTodo as updateTodoAPI,
+    completedTodo as completedTodoAPI,
 } from "./api/todoapi";
 
 // Async Thunks for API calls
@@ -47,18 +48,29 @@ export const deleteTodoAsync = createAsyncThunk(
 );
 
 export const updateTodoAsync = createAsyncThunk(
-  'todos/updateTodo',
-  async ({ id, updates }, { rejectWithValue }) => {
-    try {
-      const updatedTodo = await updateTodoAPI(id, updates);
-      return updatedTodo;
-    } catch (error) {
-      // error.response?.data or error.message depending on backend error format
-      return rejectWithValue(error.response?.data?.message || error.message);
+    'todos/updateTodo',
+    async ({ id, updates }, { rejectWithValue }) => {
+        try {
+            const updatedTodo = await updateTodoAPI(id, updates);
+            return updatedTodo;
+        } catch (error) {
+            // error.response?.data or error.message depending on backend error format
+            return rejectWithValue(error.response?.data?.message || error.message);
+        }
     }
-  }
 );
 
+export const completedTodoAsync = createAsyncThunk(
+    'todos/completedTodo',
+    async (id, { rejectWithValue }) => {
+        try {
+            const data = await completedTodoAPI(id); // Your API call
+            return data;
+        } catch (error) {
+            return rejectWithValue(error.response?.data || error.message);
+        }
+    }
+);
 
 export const todoSlice = createSlice({
     name: "todolist",
@@ -88,7 +100,7 @@ export const todoSlice = createSlice({
                 state.loading = false;
                 state.error = action.payload;
             })
-            
+
             // Add Todo
             .addCase(addTodoAsync.pending, (state) => {
                 state.loading = true;
@@ -101,7 +113,7 @@ export const todoSlice = createSlice({
                 state.loading = false;
                 state.error = action.payload;
             })
-            
+
             // Delete Todo
             .addCase(deleteTodoAsync.pending, (state) => {
                 state.loading = true;
@@ -114,7 +126,7 @@ export const todoSlice = createSlice({
                 state.loading = false;
                 state.error = action.payload;
             })
-            
+
             // Update Todo
             .addCase(updateTodoAsync.pending, (state) => {
                 state.loading = true;
@@ -129,6 +141,19 @@ export const todoSlice = createSlice({
             .addCase(updateTodoAsync.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload;
+            })
+            .addCase(completedTodoAsync.fulfilled, (state, action) => {
+                state.loading = false;
+                // Find and update the todo in the state
+                const index = state.todos.findIndex(todo => todo._id === action.payload._id);
+                if (index !== -1) {
+                    state.todos[index] = action.payload;
+                }
+            }).addCase(completedTodoAsync.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload;
+            }).addCase(completedTodoAsync.pending, (state, action) => {
+                state.loading = true;
             });
     }
 });

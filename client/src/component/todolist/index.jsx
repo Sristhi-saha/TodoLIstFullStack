@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { fetchTodos, deleteTodoAsync, updateTodoAsync } from "../../store/slice/todoSlice.js";
+import { fetchTodos, deleteTodoAsync, updateTodoAsync, completedTodoAsync } from "../../store/slice/todoSlice.js";
 import NavigateOption from "../navigate/index.jsx";
 import EditTodo from "../editTodo/index.jsx";
 
@@ -23,11 +23,8 @@ function TodoList() {
         window.location.href = '/add-todo';
     };
 
-    const handleToggleComplete = (todo) => {
-        dispatch(updateTodoAsync({
-            id: todo._id,
-            updates: { completed: !todo.completed }
-        }));
+    const handleToggleComplete = (id) => {
+        dispatch(completedTodoAsync(id));
     };
 
     const handleDeleteTodo = (id) => {
@@ -103,9 +100,9 @@ function TodoList() {
                                 >
                                     <div className="flex items-center gap-2 flex-1">
                                         <input
-                                            type="input"
+                                            type="checkbox"
                                             checked={todo.completed}
-                                            onChange={() => handleToggleComplete(todo)}
+                                            onChange={() => handleToggleComplete(todo._id)}
                                             className="w-5 h-5 cursor-pointer"
                                         />
                                         <span className={todo.completed ? "line-through text-gray-500" : "text-gray-800 text-base sm:text-lg"}>

@@ -21,7 +21,9 @@ export default function Pending(){
     return(
         <>
             <div className="">
-                
+                 <div className="">
+                <h1>TEST - pending Component Works</h1>
+            </div>
             </div>
         </>
     )
